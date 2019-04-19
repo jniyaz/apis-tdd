@@ -19,4 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Api')->group(function () {
     Route::post('/products', 'ProductController@store');
+    Route::get('/products/{id}', 'ProductController@show');
+    Route::put('/products/{id}', 'ProductController@update');
 });

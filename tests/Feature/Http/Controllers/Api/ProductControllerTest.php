@@ -12,8 +12,7 @@ class ProductControllerTest extends TestCase
     /**
      * @test
      */
-    public function can_create_a_product()
-    {
+    public function can_create_a_product() {
         $faker = Factory::create();
         
         // Given
@@ -51,5 +50,72 @@ class ProductControllerTest extends TestCase
                     'slug' => str_slug($name),
                     'price' => $price
                 ]);
+    }
+
+    /**
+     * @test
+     */
+    public function will_it_fail_with_404_if_product_not_found() {
+        $response = $this->json('GET', "api/product/-1");
+        return $response->assertStatus(404);
+    }
+
+    /** 
+     * @test
+     */
+    public function can_return_a_product() {
+
+        // Given
+        $product = $this->create('Product');
+
+        // When
+        $response = $this->json('GET', "api/products/$product->id");
+
+        // Then
+        $response
+                ->assertStatus(200)
+                ->assertExactJson([
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'slug' => $product->slug,
+                    'price' => $product->price,
+                    'created_at' => $product->created_at
+                ]);
+    }
+
+    /**
+     * @test
+     */
+
+    public function will_it_fail_with_404_if_product_needed_to_update_not_found()
+    {
+        // when
+        $response = $this->json('PUT', "api/products/-1");
+        // then
+        return $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     */
+    public function can_update_a_product()
+    {
+        $product = $this->create('Product');
+        
+        $response = $this->json('PUT', "api/products/$product->id", [
+            'name' => $product->name.' updated',
+            'slug' => str_slug($product->name.' updated'),
+            'price' => $product->price + 10
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'id' => $product->id,
+                'name' => $product->name.' updated',
+                'slug' => str_slug($product->name.' updated'),
+                'price' => $product->price + 10,
+                'created_at' => $product->created_at
+            ]);
     }
 }
