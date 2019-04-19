@@ -30,14 +30,21 @@ class ProductControllerTest extends TestCase
         // Then 
             // product exists
             $response
-                    ->assertJsonStructure(['id', 'name', 'price', 'created_at']) // exactly it shoud return like this otherwise fails
+                    // exactly it shoud return like this otherwise fails
+                    ->assertJsonStructure(['id', 'name', 'price', 'created_at']) 
+                    
+                    // exactly requested data to be return otherwise fails
                     ->assertJson([
                         'name' => $name,
                         'slug' => str_slug($name),
                         'price' => $price
-                    ])  // exactly requested data to be return otherwise fails
+                    ])  
+                    
+                    // status code
                     ->assertStatus(201);
-            
+                        
+            \Log::info(1, [$response->getContent()]);
+
             $this
                 ->assertDatabaseHas('products', [
                     'name' => $name,
