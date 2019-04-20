@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * @test
      */
@@ -17,7 +18,7 @@ class ProductControllerTest extends TestCase
         
         // Given
             // user is authenticated (..will come back to this test)
-        
+
         // When
             // POST request to create a product
             $response = $this->json('POST', 'api/products', [
