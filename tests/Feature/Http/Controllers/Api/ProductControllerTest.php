@@ -51,9 +51,9 @@ class ProductControllerTest extends TestCase
                 'data' => [
                     '*' => ['id', 'name', 'slug', 'price', 'created_at'],
                 ],
-                
+
                 'links' => ['first', 'last', 'prev', 'next'],
-                
+
                 'meta'  => [
                     'current_page', 'last_page', 'from', 'to', 'total', 'per_page', 'path'
                 ]
@@ -68,7 +68,7 @@ class ProductControllerTest extends TestCase
      */
     public function can_create_a_product() {
         $faker = Factory::create();
-        
+
         // Given
             // user is authenticated (..will come back to this test)
 
@@ -79,23 +79,23 @@ class ProductControllerTest extends TestCase
                 'slug' => str_slug($name),
                 'price' => $price = random_int(10, 100)
             ]);
-        
-        // Then 
+
+        // Then
             // product exists
             $response
                     // exactly it shoud return like this otherwise fails
-                    ->assertJsonStructure(['id', 'name', 'slug', 'price', 'created_at']) 
-                    
+                    ->assertJsonStructure(['id', 'name', 'slug', 'price', 'created_at'])
+
                     // exactly requested data to be return otherwise fails
                     ->assertJson([
                         'name' => $name,
                         'slug' => str_slug($name),
                         'price' => $price
-                    ])  
-                    
+                    ])
+
                     // status code
                     ->assertStatus(201);
-                        
+
             \Log::info(1, [$response->getContent()]);
 
             $this
@@ -114,7 +114,7 @@ class ProductControllerTest extends TestCase
         return $response->assertStatus(404);
     }
 
-    /** 
+    /**
      * @test
      */
     public function can_return_a_product() {
@@ -155,7 +155,7 @@ class ProductControllerTest extends TestCase
     public function can_update_a_product()
     {
         $product = $this->create('Product');
-        
+
         $response = $this->actingAs($this->create('User', [], false), 'api')->json('PUT', "api/products/$product->id", [
             'name' => $product->name.' updated',
             'slug' => str_slug($product->name.' updated'),
@@ -188,7 +188,7 @@ class ProductControllerTest extends TestCase
     /**
      * @test
      */
-    
+
     public function can_delete_a_product()
     {
         $product = $this->create('Product');
