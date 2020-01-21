@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Author::class, function (Faker $faker) {
     return [
-        //
+        'name' => $faker->name,
+        'email' => $faker->email,
+        'dob' => now()->subYears(10)
     ];
 });
