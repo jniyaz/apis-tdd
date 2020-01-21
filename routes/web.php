@@ -12,7 +12,7 @@ Route::patch('/books/{book}-{slug}', 'BooksController@update');
 Route::delete('/books/{book}-{slug}', 'BooksController@destroy');
 
 // Author
-Route::post('/author', 'AuthorsController@store');
+Route::post('/authors', 'AuthorsController@store');
 
 // book checkout
 Route::post('/checkout/{book}', 'BookCheckoutController@store');
